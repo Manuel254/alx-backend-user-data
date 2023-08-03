@@ -49,7 +49,7 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
 def main():
     """Displays data from database"""
     message = 'name={}; email={}; phone={}; ssn={}; password={}; ip={}; \
-                last_login={}; user_agent={};'
+last_login={}; user_agent={};'
     logger = get_logger()
     conn = get_db()
     cur = conn.cursor()

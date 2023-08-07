@@ -21,7 +21,7 @@ if getenv('AUTH_TYPE') == 'auth':
 
 @app.before_request
 def before_request():
-    """Request validation handler"""
+    Request validation handler
     excluded_paths = ['/api/v1/status/',
                       '/api/v1/unauthorized/',
                       '/api/v1/forbidden/']
@@ -38,6 +38,7 @@ def before_request():
     if user is None:
         abort(403)
 """
+
 
 @app.errorhandler(404)
 def not_found(error) -> str:

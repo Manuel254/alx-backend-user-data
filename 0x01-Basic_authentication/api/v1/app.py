@@ -15,13 +15,13 @@ app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 auth = None
 
-#if getenv('AUTH_TYPE') == 'auth':
+# if getenv('AUTH_TYPE') == 'auth':
 #    from api.v1.auth.auth import Auth
 #    auth = Auth()
 
 
-#@app.before_request
-#def before_request():
+# @app.before_request
+# def before_request():
 #    Request validation handler
 #    excluded_paths = ['/api/v1/status/',
 #                      '/api/v1/unauthorized/',

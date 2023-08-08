@@ -15,10 +15,12 @@ app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 auth = None
 
-if getenv('AUTH_TYPE') == 'auth':
+AUTH_TYPE = getenv("AUTH_TYPE")
+
+if AUTH_TYPE == 'auth':
     from api.v1.auth.auth import Auth
     auth = Auth()
-elif getenv('AUTH_TYPE') == 'basic_auth':
+elif AUTH_TYPE == 'basic_auth':
     from api.v1.auth.basic_auth import BasicAuth
     auth = BasicAuth()
 
@@ -26,20 +28,21 @@ elif getenv('AUTH_TYPE') == 'basic_auth':
 @app.before_request
 def before_request():
     """Request validation handler"""
-    excluded_paths = ['/api/v1/status/',
-                      '/api/v1/unauthorized/',
-                      '/api/v1/forbidden/']
-    path = auth.require_auth(request.path, excluded_paths)
-    authorization_header = auth.authorization_header(request)
-    user = auth.current_user(request)
-
     if auth is None:
         pass
-    if path:
-        if authorization_header is None:
-            abort(401)
-        if user is None:
-            abort(403)
+    else:
+        excluded_paths = ['/api/v1/status/',
+                          '/api/v1/unauthorized/',
+                          '/api/v1/forbidden/']
+        path = auth.require_auth(request.path, excluded_paths)
+        authorization_header = auth.authorization_header(request)
+        user = auth.current_user(request)
+
+        if path:
+            if authorization_header is None:
+                abort(401)
+            if user is None:
+                abort(403)
 
 
 @app.errorhandler(404)

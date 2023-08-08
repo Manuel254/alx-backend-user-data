@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Basic Auth module"""
 from .auth import Auth
+from typing import TypeVar
 from base64 import b64decode
+from models.user import User
 
 
 class BasicAuth(Auth):
@@ -52,3 +54,21 @@ class BasicAuth(Auth):
         else:
             my_str = decoded_base64_authorization_header.split(':')
             return (my_str[0], my_str[1])
+
+    def user_object_from_credentials(self, user_email: str, user_pwd: str)\
+            -> TypeVar('User'):
+        """Returns a user instance based on his email and password"""
+        if user_email is None or not isinstance(user_email, str):
+            return None
+        elif user_pwd is None or not isinstance(user_pwd, str):
+            return None
+        else:
+            if User.count() == 0:
+                return None
+            else:
+                users = User.search(dict(email=user_email))
+
+                for user in users:
+                    if user.is_valid_password(user_pwd):
+                        return user
+                return None

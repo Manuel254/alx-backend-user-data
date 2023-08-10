@@ -32,3 +32,16 @@ def login():
                 res.set_cookie(session_name, session_id)
                 return res
         return jsonify({"error": "wrong password"}), 401
+
+
+@app_views.route('/auth_session/logout',
+                 methods=['DELETE'], strict_slashes=False)
+def logout():
+    """Handles logout for user"""
+    from api.v1.app import auth
+    destroy_session = auth.destroy_session(request)
+
+    if not destroy_session:
+        abort(404)
+    else:
+        return jsonify({}), 200

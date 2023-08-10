@@ -26,7 +26,7 @@ class Auth:
         """Current user of api"""
         return None
 
-    def session_cookie(self, request=None):
+    def session_cookie(self, request=None) -> str:
         """Returns a cookie value from a request"""
         if request is None:
             return None
@@ -34,3 +34,4 @@ class Auth:
 
         if name == '_my_session_id':
             return request.cookies.get(name)
+        return None

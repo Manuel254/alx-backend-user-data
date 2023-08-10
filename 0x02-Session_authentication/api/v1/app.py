@@ -47,9 +47,8 @@ def before_request():
         if path:
             if authorization_header is None:
                 abort(401)
-            if authorization_header and session_cookie:
+            if authorization_header is None and session_cookie is None:
                 abort(401)
-                return None
             if user is None:
                 abort(403)
 

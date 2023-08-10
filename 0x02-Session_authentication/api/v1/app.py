@@ -45,8 +45,6 @@ def before_request():
         session_cookie = auth.session_cookie(request)
 
         if path:
-            if authorization_header is None:
-                abort(401)
             if authorization_header is None and session_cookie is None:
                 abort(401)
             if user is None:

@@ -27,12 +27,11 @@ class Auth:
         """Creates a user if not existing"""
         try:
             user = self._db.find_user_by(email=email)
+            raise ValueError("User {} already exists".format(email))
         except (NoResultFound, InvalidRequestError):
             password = _hash_password(password)
             user = self._db.add_user(email=email, hashed_password=password)
             return user
-        else:
-            raise ValueError("User {} already exists".format(email))
 
     def valid_login(self, email: str, password: str) -> bool:
         """Credentials validation"""

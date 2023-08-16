@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Authentication module"""
 import bcrypt
+import uuid
 from typing import TypeVar
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import InvalidRequestError
@@ -14,6 +15,11 @@ def _hash_password(password: str) -> bytes:
     hashed = bcrypt.hashpw(password, bcrypt.gensalt())
 
     return hashed
+
+
+def _generate_uuid() -> str:
+    """Return a string representation of uuid"""
+    return str(uuid.uuid4())
 
 
 class Auth:

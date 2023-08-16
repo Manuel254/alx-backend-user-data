@@ -3,6 +3,7 @@
 import bcrypt
 from typing import TypeVar
 from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.exc import InvalidRequestError
 from db import DB
 from user import User
 
@@ -26,9 +27,22 @@ class Auth:
         """Creates a user if not existing"""
         try:
             user = self._db.find_user_by(email=email)
-        except NoResultFound:
+        except (NoResultFound, InvalidRequestError):
             password = _hash_password(password)
             user = self._db.add_user(email=email, hashed_password=password)
             return user
         else:
             raise ValueError("User {} already exists".format(email))
+
+    def valid_login(self, email: str, password: str) -> bool:
+        """Credentials validation"""
+        try:
+            user = self._db.find_user_by(email=email)
+            password = password.encode()
+
+            if bcrypt.checkpw(password, user.hashed_password):
+                return True
+        except (NoResultFound, InvalidRequestError):
+            return False
+        else:
+            return False

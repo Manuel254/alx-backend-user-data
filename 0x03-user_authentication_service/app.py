@@ -49,7 +49,7 @@ def login():
 @app.route('/sessions', methods=['DELETE'], strict_slashes=False)
 def logout():
     """Logout route for user"""
-    session_id = request.cookie.get('session_id')
+    session_id = request.cookies.get('session_id')
 
     user = AUTH.get_user_from_session_id(session_id)
 

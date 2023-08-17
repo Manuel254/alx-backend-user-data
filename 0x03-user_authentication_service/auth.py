@@ -2,7 +2,7 @@
 """Authentication module"""
 import bcrypt
 import uuid
-from typing import TypeVar
+from typing import TypeVar, Optional
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import InvalidRequestError
 from db import DB
@@ -60,4 +60,15 @@ class Auth:
             user.session_id = session_id
             return session_id
         except NoResultFound:
+            return None
+
+    def get_user_from_session_id(self, session_id: str)
+        -> Optional[TypeVar(User)]:
+        """Retrieve a user from a session id"""
+        try:
+            user = self._db.find_user_by(session_id=session_id)
+            return user
+        except NoResultFound:
+            return None
+        else:
             return None
